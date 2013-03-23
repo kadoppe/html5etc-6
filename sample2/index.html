@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+
+    <!-- 各種ライブラリの読み込み -->
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="../lib/jquery-ui.min.js"></script>
+    <script src="../lib/twitter.js"></script>
+
+    <!-- D3.jsの読み込み -->
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+  </head>
+  <body>
+    <script type="text/javascript">
+      $(function() {
+        $('button').click(function() {
+          getTweets('kadoppe', function(results) {
+            var svg = d3.select('#tweets').selectAll("circle")
+              .data(results, function(data) { return data.id });
+
+            svg.enter().append('circle')
+              .attr('r', 10)
+              .attr('cx', function(data) {
+                return data.text.length * 3;
+              })
+              .attr('cy', function(data) {
+                var d = new Date();
+                d.setTime(Date.parse(data.created_at));
+                return d.getHours() * 20;
+              });
+          });
+        })
+      });
+    </script>
+
+    <svg id="tweets" width="500" height="500"></svg>
+
+    <button>読み込み</button>
+  </body>
+</html>
